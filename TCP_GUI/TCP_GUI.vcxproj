@@ -139,8 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
-    <ClInclude Include="events.hpp" />
+    <ClInclude Include="TCP.hpp" />
     <ClInclude Include="TCP_GUI.hpp" />
+    <ClInclude Include="type_def.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

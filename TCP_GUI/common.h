@@ -4,9 +4,12 @@
 #include <wx/grid.h>
 #include <wx/modalhook.h>
 #include <map>
+#include "type_def.hpp"
 typedef enum wxIDs {
     // INPUT IDs
     SOURCE_PORT_INPUT_ID = wxID_HIGHEST + 1,
+    SOURCE_ADDRESS_INPUT,
+    TARGET_IP_ADDRESS_INPUT,
     DESTINATION_PORT_INPUT_ID,
     SEQ_INPUT_ID,
     ACK_INPUT_ID,

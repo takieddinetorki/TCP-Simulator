@@ -1,21 +1,19 @@
 #pragma once
 #include "type_def.hpp"
-
+using error_code = tcp::type::error_code;
+using queue = tcp::type::tsqueue;
+using state = tcp::type::TCPSessionState;
+using HEADER = tcp::type::TCPHeader;
+using SEGMENT = tcp::type::TCPSegment;
+using session = tcp::TCPSession;
+using option = tcp::type::TCPOption;
+/// <summary>
+/// Maps the IP addresses with the 
+/// TO DO: Tidy it up, it's very messy to have it GLOBALIZED. Encapsulate it into a class or something
+/// </summary>
+std::map<std::string, session> IP_MAP;
+std::map<int, session> ID_MAP; // used for checking later for errors it would be deleted when the ACTUAL implementation happens
 namespace tcp {
-	class TCPSession;
-	using error_code = tcp::type::error_code;
-	using queue = tcp::type::tsqueue;
-	using state = tcp::type::TCPSessionState;
-	using HEADER = tcp::type::TCPHeader;
-	using SEGMENT = tcp::type::TCPSegment;
-	using session = tcp::TCPSession;
-	using option = tcp::type::TCPOption;
-	/// <summary>
-	/// Maps the IP addresses with the 
-	/// TO DO: Tidy it up, it's very messy to have it GLOBALIZED. Encapsulate it into a class or something
-	/// </summary>
-	std::map<std::string, session> IP_MAP;
-	std::map<int, session> ID_MAP; // used for checking later for errors it would be deleted when the ACTUAL implementation happens
 	class TCPSession
 	{
 	public:
@@ -28,7 +26,7 @@ namespace tcp {
 			
 			auto sessionIter = IP_MAP.find(_destinationIp);
 			if (sessionIter != IP_MAP.end()) {
-				_connectedSession = sessionIter->second;
+				_connectedSession = &sessionIter->second;
 				return error_code::no_error;
 			}
 			else
@@ -148,7 +146,6 @@ namespace tcp {
 			// Set other header fields as necessary
 
 			SEGMENT segment(header);
-			// Optionally add any required TCP options to segment.header._options here
 
 			send(segment); // Dispatch the SYN-ACK segment
 		}
@@ -168,7 +165,7 @@ namespace tcp {
 		std::string _MyIp;
 		std::string _destinationIp;
 		state _currentState = state::CLOSED;
-		session _connectedSession;
+		session _connectedSession = session(std::move("0.0.0.0"), std::move(1));
 		std::thread receiver;
 	};
 }
